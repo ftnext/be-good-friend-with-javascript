@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>PyCon JP 2020 talks</title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+
+  <div id="app">
+  </div>
+
+  <div id="talks">
+    <div v-for="talk in talks">
+      {{ talk.title }}
+      at {{ talk.room }}
+      <span v-for="keyword in talk.keywords">
+        {{ keyword }}
+      </span>
+    </div>
+  </div>
+
+  <script>
+    const gsheet_url = "https://spreadsheets.google.com/feeds/list/1L1_OzYaTqO8DLwkA6hiV8cd536H0_DXGwbuGmVSPo8k/1/public/values?alt=json";
+
+    var talksList = [];
+
+    var app = new Vue({
+      el: "#app",
+      data() {
+        return {
+          info: null
+        }
+      },
+      mounted() {
+        axios.get(gsheet_url)
+            .then(response => (parseData(response.data.feed.entry)))
+        }
+    });
+
+    var talks = new Vue({
+      el: "#talks",
+      data: {
+        talks: talksList
+      }
+    });
+
+    function parseData(entries) {
+      entries.forEach(function(value) {
+        const entry = {
+          "room": value.gsx$room.$t,
+          "title": value.gsx$title.$t,
+          "keywords": value.gsx$keywords.$t.split(",")
+        };
+        talksList.push(entry)
+      });
+    }
+  </script>
+</body>
+
+</html>
