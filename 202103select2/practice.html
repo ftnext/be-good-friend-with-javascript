@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".js-example-basic-multiple").select2({
+          placeholder: "好きなユーフォニアム奏者を選ぶ",
+          width: "style",
+        });
+
+        $(".js-example-basic-multiple").on("select2:select", function (e) {
+          selectLog(e);
+        });
+        $(".js-example-basic-multiple").on("select2:unselect", function (e) {
+          unselectLog(e);
+        });
+
+        function selectLog(evt) {
+          // console.log(evt.params);
+          console.log(evt.params.data.text + " が選択されました");
+        }
+        function unselectLog(evt) {
+          console.log(evt.params.data.text + " の選択が解除されました");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <select class="js-example-basic-multiple js-states form-control" multiple>
+      <option></option>
+      <option value="kumiko">黄前久美子</option>
+      <option value="asuka">田中あすか</option>
+      <option value="kanade">久石奏</option>
+      <option value="natsuki">中川夏紀</option>
+    </select>
+  </body>
+</html>
